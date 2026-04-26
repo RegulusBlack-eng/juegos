@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marcos | Game Hub Portafolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-zinc-950 text-white font-sans min-h-screen">
+
+    <nav class="p-6 border-b border-zinc-800 flex justify-between items-center">
+        <h1 class="text-2xl font-black tracking-tighter">GAME<span class="text-blue-500">HUB</span></h1>
+        <div class="text-zinc-500 text-sm font-medium uppercase tracking-widest">Estudiante UNGS</div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto p-10">
+        <header class="mb-12">
+            <h2 class="text-4xl font-bold mb-2">Mis Proyectos de Lógica</h2>
+            <p class="text-zinc-400">Seleccioná un juego para probar las mecánicas y el código.</p>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            
+            <a href="./snake/index.html" class="group bg-zinc-900 border border-zinc-800 p-6 rounded-3xl hover:border-green-500 transition-all duration-300">
+                <div class="w-12 h-12 bg-green-500/10 rounded-xl flex items-center justify-center mb-4 text-green-500 font-bold text-2xl italic">S</div>
+                <h3 class="text-xl font-bold mb-2 group-hover:text-green-400">Snake Game</h3>
+                <p class="text-zinc-500 text-sm">Clásico juego de la serpiente. Desarrollado con arreglos y ciclos infinitos.</p>
+            </a>
+
+            <a href="./chess/index.html" class="group bg-zinc-900 border border-zinc-800 p-6 rounded-3xl hover:border-blue-500 transition-all duration-300">
+                <div class="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center mb-4 text-blue-500 font-bold text-2xl italic">A</div>
+                <h3 class="text-xl font-bold mb-2 group-hover:text-blue-400">Ajedrez Pro</h3>
+                <p class="text-zinc-500 text-sm">Lógica de movimientos complejos y validación de piezas en el tablero.</p>
+            </a>
+
+            <a href="./tictactoe/index.html" class="group bg-zinc-900 border border-zinc-800 p-6 rounded-3xl hover:border-purple-500 transition-all duration-300">
+                <div class="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center mb-4 text-purple-500 font-bold text-2xl italic">X</div>
+                <h3 class="text-xl font-bold mb-2 group-hover:text-purple-400">Tres en Raya</h3>
+                <p class="text-zinc-500 text-sm">Validación de estados de victoria y lógica de turnos X/O.</p>
+            </a>
+
+        </div>
+    </main>
+
+</body>
+</html>

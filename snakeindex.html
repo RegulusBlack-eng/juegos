@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Game | Portafolio Marcos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body class="bg-zinc-950 text-white min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div class="mb-6 text-center">
+        <h1 class="text-3xl font-black text-green-500 mb-2">SNAKE_RETRO</h1>
+        <p class="text-zinc-500 text-sm">Puntaje: <span id="score" class="text-white font-mono text-xl">0</span></p>
+    </div>
+
+    <canvas id="gameCanvas" width="400" height="400" class="game-container rounded-lg border-green-500/30"></canvas>
+
+    <div class="mt-8 grid grid-cols-3 gap-2 md:hidden">
+        <div></div>
+        <button onclick="changeDirection('UP')" class="bg-zinc-800 p-4 rounded-xl">↑</button>
+        <div></div>
+        <button onclick="changeDirection('LEFT')" class="bg-zinc-800 p-4 rounded-xl">←</button>
+        <button onclick="changeDirection('DOWN')" class="bg-zinc-800 p-4 rounded-xl">↓</button>
+        <button onclick="changeDirection('RIGHT')" class="bg-zinc-800 p-4 rounded-xl">→</button>
+    </div>
+
+    <a href="../index.html" class="mt-8 text-zinc-500 hover:text-white transition-colors">← Volver al Hub</a>
+
+    <script src="script.js"></script>
+</body>
+</html>
