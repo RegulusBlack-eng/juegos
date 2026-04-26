@@ -43,47 +43,83 @@ function collision(head, array) {
 }
 
 function draw() {
-    // 1. Dibujar el fondo tipo Tablero de Ajedrez (Google Style)
-    ctx.fillStyle = "#a2d149"; // Verde oscuro de base
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
+    // 1. Dibujar el fondo tipo Tablero de Ajedrez (como ya tenías, pero más suave)
     for (let i = 0; i < canvas.width / box; i++) {
         for (let j = 0; j < canvas.height / box; j++) {
-            if ((i + j) % 2 === 0) {
-                ctx.fillStyle = "#aad751"; // Verde claro
-                ctx.fillRect(i * box, j * box, box, box);
-            }
+            // Unificamos el fondo para que la textura sea la serpiente
+            ctx.fillStyle = "#aad751"; // Base verde claro
+            ctx.fillRect(i * box, j * box, box, box);
         }
     }
 
-    // 2. Dibujar serpiente (Azul Google)
-    for(let i = 0; i < snake.length; i++) {
-        // Cabeza azul fuerte, cuerpo azul más claro
-        ctx.fillStyle = (i == 0) ? "#4285f4" : "#6ea1f8"; 
-        
-        // Dibujamos un rectángulo con bordes redondeados (efecto pastilla)
-        drawRoundedRect(ctx, snake[i].x, snake[i].y, box, box, 5);
-        ctx.fill();
-    }
-
-    // 3. Dibujar comida (Manzana roja con emoji)
-    // Para simplificar, dibujamos un círculo rojo, pero podrías usar una imagen
-    ctx.fillStyle = "#ea4335"; // Rojo Google
+    // 2. Dibujar la comida (una manzana con brillo)
+    ctx.fillStyle = "#ef4444"; // Rojo manzana
     ctx.beginPath();
+    // Dibujamos un círculo para la manzana
     ctx.arc(food.x + box/2, food.y + box/2, box/2 - 2, 0, 2 * Math.PI);
     ctx.fill();
+    // Brillo de la manzana
+    ctx.fillStyle = "#ffffff66";
+    ctx.beginPath();
+    ctx.arc(food.x + box/2 - 3, food.y + box/2 - 3, 3, 0, 2 * Math.PI);
+    ctx.fill();
 
-    // Posición vieja de la cabeza
+    // 3. Dibujar la serpiente "REAL"
+    for(let i = 0; i < snake.length; i++) {
+        const isHead = (i === 0);
+        const radius = box / 2; // Dibujamos círculos en lugar de bloques
+
+        ctx.fillStyle = isHead ? "#22c55e" : "#16a34a"; // Verde fuerte para cabeza, más oscuro para cuerpo
+
+        ctx.beginPath();
+        // Dibujamos un círculo en el centro de cada bloque
+        ctx.arc(snake[i].x + radius, snake[i].y + radius, radius, 0, 2 * Math.PI);
+        ctx.fill();
+
+        // --- Agregar Ojos a la Cabeza ---
+        if (isHead) {
+            const eyeColor = "#000000"; // Negro
+            const pupilColor = "#ffffff"; // Blanco
+            const eyeRadius = 3;
+            const pupilRadius = 1;
+            
+            // Posición base de los ojos (centro de la cabeza)
+            const headCenterX = snake[i].x + radius;
+            const headCenterY = snake[i].y + radius;
+
+            // Dibujar primer ojo
+            ctx.fillStyle = eyeColor;
+            ctx.beginPath();
+            ctx.arc(headCenterX - 5, headCenterY - 3, eyeRadius, 0, 2 * Math.PI);
+            ctx.fill();
+            // Pupila
+            ctx.fillStyle = pupilColor;
+            ctx.beginPath();
+            ctx.arc(headCenterX - 5, headCenterY - 3, pupilRadius, 0, 2 * Math.PI);
+            ctx.fill();
+
+            // Dibujar segundo ojo
+            ctx.fillStyle = eyeColor;
+            ctx.beginPath();
+            ctx.arc(headCenterX + 5, headCenterY - 3, eyeRadius, 0, 2 * Math.PI);
+            ctx.fill();
+            // Pupila
+            ctx.fillStyle = pupilColor;
+            ctx.beginPath();
+            ctx.arc(headCenterX + 5, headCenterY - 3, pupilRadius, 0, 2 * Math.PI);
+            ctx.fill();
+        }
+    }
+
+    // --- Lógica del Movimiento (esto se mantiene igual) ---
     let snakeX = snake[0].x;
     let snakeY = snake[0].y;
 
-    // Mover cabeza
     if( d == "LEFT") snakeX -= box;
     if( d == "UP") snakeY -= box;
     if( d == "RIGHT") snakeX += box;
     if( d == "DOWN") snakeY += box;
 
-    // Si come la manzana
     if(snakeX == food.x && snakeY == food.y) {
         score++;
         scoreElement.innerHTML = score;
@@ -92,20 +128,19 @@ function draw() {
             y: Math.floor(Math.random() * 19 + 1) * box
         };
     } else {
-        snake.pop(); // Quitar la cola si no comió
+        snake.pop();
     }
 
     let newHead = { x: snakeX, y: snakeY };
 
-    // Game Over: chocar bordes o a sí misma
     if(snakeX < 0 || snakeX >= canvas.width || snakeY < 0 || snakeY >= canvas.height || collision(newHead, snake)) {
         clearInterval(game);
-        // Podrías poner un cartel más lindo aquí
-        alert("¡Game Over! Puntaje final: " + score);
-        location.reload(); // Reiniciar
+        alert("GAME OVER - Puntaje: " + score);
+        location.reload();
     }
 
-    snake.unshift(newHead); // Agregar nueva cabeza
+    snake.unshift(newHead);
+}
 }
 
 // Función auxiliar para dibujar rectángulos redondeados
