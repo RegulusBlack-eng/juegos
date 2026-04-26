@@ -2,9 +2,9 @@ const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 const scoreElement = document.getElementById("score");
 
-const box = 20; // Tamaño de cada cuadradito
+const box = 20; // Tamaño de cada cuadradito (1 grid unit)
 let score = 0;
-let gameSpeed = 100;
+let gameSpeed = 120; // Un poco más lento para que sea más jugable
 
 // La serpiente es un arreglo de objetos (coordenadas)
 let snake = [{ x: 10 * box, y: 10 * box }];
@@ -43,21 +43,35 @@ function collision(head, array) {
 }
 
 function draw() {
-    // Limpiar fondo
-    ctx.fillStyle = "black";
+    // 1. Dibujar el fondo tipo Tablero de Ajedrez (Google Style)
+    ctx.fillStyle = "#a2d149"; // Verde oscuro de base
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Dibujar serpiente
-    for(let i = 0; i < snake.length; i++) {
-        ctx.fillStyle = (i == 0) ? "#22c55e" : "#166534"; // Cabeza más clara que el cuerpo
-        ctx.fillRect(snake[i].x, snake[i].y, box, box);
-        ctx.strokeStyle = "#000";
-        ctx.strokeRect(snake[i].x, snake[i].y, box, box);
+    for (let i = 0; i < canvas.width / box; i++) {
+        for (let j = 0; j < canvas.height / box; j++) {
+            if ((i + j) % 2 === 0) {
+                ctx.fillStyle = "#aad751"; // Verde claro
+                ctx.fillRect(i * box, j * box, box, box);
+            }
+        }
     }
 
-    // Dibujar comida
-    ctx.fillStyle = "#ef4444";
-    ctx.fillRect(food.x, food.y, box, box);
+    // 2. Dibujar serpiente (Azul Google)
+    for(let i = 0; i < snake.length; i++) {
+        // Cabeza azul fuerte, cuerpo azul más claro
+        ctx.fillStyle = (i == 0) ? "#4285f4" : "#6ea1f8"; 
+        
+        // Dibujamos un rectángulo con bordes redondeados (efecto pastilla)
+        drawRoundedRect(ctx, snake[i].x, snake[i].y, box, box, 5);
+        ctx.fill();
+    }
+
+    // 3. Dibujar comida (Manzana roja con emoji)
+    // Para simplificar, dibujamos un círculo rojo, pero podrías usar una imagen
+    ctx.fillStyle = "#ea4335"; // Rojo Google
+    ctx.beginPath();
+    ctx.arc(food.x + box/2, food.y + box/2, box/2 - 2, 0, 2 * Math.PI);
+    ctx.fill();
 
     // Posición vieja de la cabeza
     let snakeX = snake[0].x;
@@ -86,11 +100,27 @@ function draw() {
     // Game Over: chocar bordes o a sí misma
     if(snakeX < 0 || snakeX >= canvas.width || snakeY < 0 || snakeY >= canvas.height || collision(newHead, snake)) {
         clearInterval(game);
-        alert("GAME OVER - Puntaje: " + score);
+        // Podrías poner un cartel más lindo aquí
+        alert("¡Game Over! Puntaje final: " + score);
         location.reload(); // Reiniciar
     }
 
     snake.unshift(newHead); // Agregar nueva cabeza
+}
+
+// Función auxiliar para dibujar rectángulos redondeados
+function drawRoundedRect(ctx, x, y, width, height, radius) {
+    ctx.beginPath();
+    ctx.moveTo(x + radius, y);
+    ctx.lineTo(x + width - radius, y);
+    ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+    ctx.lineTo(x + width, y + height - radius);
+    ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+    ctx.lineTo(x + radius, y + height);
+    ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+    ctx.lineTo(x, y + radius);
+    ctx.quadraticCurveTo(x, y, x + radius, y);
+    ctx.closePath();
 }
 
 let game = setInterval(draw, gameSpeed);
