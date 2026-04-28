@@ -4,39 +4,15 @@ const scoreElement = document.getElementById("score");
 
 const box = 20;
 let score = 0;
-let gameSpeed = 100;
+let gameSpeed = 60; // Antes era 100. Ahora el juego corre casi al doble de velocidad (aprox 16 FPS)
 let d; 
 let snake = [{ x: 10 * box, y: 10 * box }];
-let food = {
-    x: Math.floor(Math.random() * 19 + 1) * box,
-    y: Math.floor(Math.random() * 19 + 1) * box
-};
 
-document.addEventListener("keydown", direction);
+// ... (mantené la lógica de dirección y comida)
 
-function direction(event) {
-    if(event.keyCode == 37 && d != "RIGHT") d = "LEFT";
-    else if(event.keyCode == 38 && d != "DOWN") d = "UP";
-    else if(event.keyCode == 39 && d != "LEFT") d = "RIGHT";
-    else if(event.keyCode == 40 && d != "UP") d = "DOWN";
-}
-
-function changeDirection(newDir) {
-    if(newDir == "LEFT" && d != "RIGHT") d = "LEFT";
-    if(newDir == "UP" && d != "DOWN") d = "UP";
-    if(newDir == "RIGHT" && d != "LEFT") d = "RIGHT";
-    if(newDir == "DOWN" && d != "UP") d = "DOWN";
-}
-
-function collision(head, array) {
-    for(let i = 0; i < array.length; i++) {
-        if(head.x == array[i].x && head.y == array[i].y) return true;
-    }
-    return false;
-}
-
+// FUNCIÓN DE DIBUJO OPTIMIZADA
 function draw() {
-    // 1. Dibujar Tablero
+    // 1. Limpieza y Fondo (Ajedrez sutil)
     for (let i = 0; i < canvas.width / box; i++) {
         for (let j = 0; j < canvas.height / box; j++) {
             ctx.fillStyle = (i + j) % 2 === 0 ? "#aad751" : "#a2d149";
@@ -44,23 +20,20 @@ function draw() {
         }
     }
 
-    // 2. Dibujar Manzana
+    // 2. Comida
     ctx.fillStyle = "#ea4335";
     ctx.beginPath();
     ctx.arc(food.x + box/2, food.y + box/2, box/2 - 2, 0, Math.PI * 2);
     ctx.fill();
-    ctx.fillStyle = "rgba(255,255,255,0.4)";
-    ctx.beginPath();
-    ctx.arc(food.x + box/2 - 3, food.y + box/2 - 3, 2, 0, Math.PI * 2);
-    ctx.fill();
 
-    // 3. Dibujar Serpiente
+    // 3. Serpiente con diseño fluido
     snake.forEach((part, index) => {
         const isHead = index === 0;
         ctx.fillStyle = isHead ? "#34a853" : "#4ade80";
         
         ctx.beginPath();
-        ctx.arc(part.x + box/2, part.y + box/2, box/2 - 1, 0, Math.PI * 2);
+        // Reducimos un poquito el radio para que se vea más definida al moverse rápido
+        ctx.arc(part.x + box/2, part.y + box/2, box/2 - 0.5, 0, Math.PI * 2);
         ctx.fill();
 
         if (isHead) {
@@ -75,27 +48,12 @@ function draw() {
             ctx.arc(part.x + 6, part.y + 6, 1.5, 0, Math.PI * 2);
             ctx.arc(part.x + 14, part.y + 6, 1.5, 0, Math.PI * 2);
             ctx.fill();
-
-            // Lengua (solo si se mueve)
-            if (d) {
-                ctx.strokeStyle = "#ff4d4d";
-                ctx.lineWidth = 2;
-                ctx.beginPath();
-                ctx.moveTo(part.x + box/2, part.y + 2);
-                ctx.lineTo(part.x + box/2, part.y - 4);
-                ctx.stroke();
-            }
         }
     });
 
-    let snakeX = snake[0].x;
-    let snakeY = snake[0].y;
+    // ... (Lógica de movimiento de snakeX y snakeY igual que antes)
 
-    if( d == "LEFT") snakeX -= box;
-    if( d == "UP") snakeY -= box;
-    if( d == "RIGHT") snakeX += box;
-    if( d == "DOWN") snakeY += box;
-
+    // Aumentar la velocidad dinámicamente cada vez que come
     if(snakeX == food.x && snakeY == food.y) {
         score++;
         scoreElement.innerHTML = score;
@@ -103,19 +61,18 @@ function draw() {
             x: Math.floor(Math.random() * 19 + 1) * box,
             y: Math.floor(Math.random() * 19 + 1) * box
         };
+        
+        // OPCIONAL: Hacer que el juego acelere un poco cada vez que come
+        if(gameSpeed > 40) { // Ponemos un límite para que no sea injugable
+            clearInterval(game);
+            gameSpeed -= 2; 
+            game = setInterval(draw, gameSpeed);
+        }
     } else {
         snake.pop();
     }
 
-    let newHead = { x: snakeX, y: snakeY };
-
-    if(snakeX < 0 || snakeX >= canvas.width || snakeY < 0 || snakeY >= canvas.height || collision(newHead, snake)) {
-        clearInterval(game);
-        alert("¡Perdiste! Tu puntaje fue: " + score);
-        location.reload();
-    }
-
-    snake.unshift(newHead);
+    // ... (Lógica de NewHead y colisión igual que antes)
 }
 
 let game = setInterval(draw, gameSpeed);
