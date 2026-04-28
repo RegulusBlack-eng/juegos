@@ -3,52 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Snake Google Style | Portafolio Marcos</title>
+    <title>Snake | Portafolio de Estudios</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="../style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
-   <style>
+    <style>
         body { font-family: 'Poppins', sans-serif; }
         
         #gameCanvas {
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            background: #aad751; /* Color base del pasto */
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            background-color: #aad751;
             image-rendering: auto;
         }
 
-        /* Animación suave para el movimiento */
         canvas {
             transition: all 0.1s linear;
         }
     </style>
 </head>
-<body class="bg-zinc-100 text-zinc-900 min-h-screen flex flex-col items-center p-4 pt-12">
+<body class="bg-zinc-50 text-zinc-900 min-h-screen flex flex-col items-center p-6 pt-12">
 
-    <div class="bg-white p-6 md:p-8 rounded-3xl shadow-xl border border-zinc-200 flex flex-col items-center w-full max-w-lg">
+    <div class="bg-white p-8 rounded-[40px] shadow-2xl border border-zinc-100 flex flex-col items-center w-full max-w-lg">
         
-        <div class="mb-6 text-center w-full flex justify-between items-center bg-zinc-50 p-4 rounded-2xl border border-zinc-100">
-            <h1 class="text-3xl font-extrabold text-zinc-950 tracking-tighter">
-                <span class="text-blue-500">S</span><span class="text-red-500">n</span><span class="text-yellow-500">a</span><span class="text-blue-500">k</span><span class="text-green-500">e</span>
+        <div class="mb-6 text-center w-full flex justify-between items-center bg-zinc-50 p-5 rounded-3xl border border-zinc-100">
+            <h1 class="text-3xl font-extrabold tracking-tighter">
+                <span class="text-[#4285f4]">S</span><span class="text-[#ea4335]">n</span><span class="text-[#fbbc05]">a</span><span class="text-[#4285f4]">k</span><span class="text-[#34a853]">e</span>
             </h1>
-            <div class="text-zinc-500 text-sm flex items-center gap-3 bg-white px-4 py-2 rounded-full shadow-inner border border-zinc-100">
+            <div class="flex items-center gap-3 bg-white px-5 py-2 rounded-2xl shadow-sm border border-zinc-100">
                 <span class="text-2xl">🍎</span>
                 <span id="score" class="text-zinc-950 font-bold text-2xl">0</span>
             </div>
         </div>
 
-        <canvas id="gameCanvas" width="400" height="400" class="rounded-xl border-4 border-white shadow-inner bg-zinc-50"></canvas>
+        <canvas id="gameCanvas" width="400" height="400"></canvas>
 
-        <div class="mt-8 grid grid-cols-3 gap-2 md:hidden">
+        <div class="mt-8 grid grid-cols-3 gap-3 md:hidden">
             <div></div>
-            <button onclick="changeDirection('UP')" class="bg-zinc-200 p-4 rounded-xl text-2xl shadow">↑</button>
+            <button onclick="changeDirection('UP')" class="bg-zinc-100 p-5 rounded-2xl shadow-sm active:scale-95 transition-transform text-2xl">↑</button>
             <div></div>
-            <button onclick="changeDirection('LEFT')" class="bg-zinc-200 p-4 rounded-xl text-2xl shadow">←</button>
-            <button onclick="changeDirection('DOWN')" class="bg-zinc-200 p-4 rounded-xl text-2xl shadow">↓</button>
-            <button onclick="changeDirection('RIGHT')" class="bg-zinc-200 p-4 rounded-xl text-2xl shadow">→</button>
+            <button onclick="changeDirection('LEFT')" class="bg-zinc-100 p-5 rounded-2xl shadow-sm active:scale-95 transition-transform text-2xl">←</button>
+            <button onclick="changeDirection('DOWN')" class="bg-zinc-100 p-5 rounded-2xl shadow-sm active:scale-95 transition-transform text-2xl">↓</button>
+            <button onclick="changeDirection('RIGHT')" class="bg-zinc-100 p-5 rounded-2xl shadow-sm active:scale-95 transition-transform text-2xl">→</button>
         </div>
 
-        <a href="../index.html" class="mt-8 text-zinc-500 hover:text-blue-600 transition-colors font-medium text-sm">← Volver al Hub</a>
+        <a href="../index.html" class="mt-8 text-zinc-400 hover:text-zinc-800 transition-colors font-medium text-sm">← Volver al Hub de Estudios</a>
     </div>
 
     <script src="script.js"></script>
